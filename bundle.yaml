@@ -1,6 +1,6 @@
 description: |
   Sentry All in One Bundle
-series: xenial
+series: bionic
 tags:
 - sentry
 - reporting
@@ -9,28 +9,32 @@ tags:
 - development
 services:
   sentry:
-    series: xenial
-    charm: cs:~omnivector/sentry-5
+    charm: cs:~omnivector/sentry
     num_units: 1
     to:
       - '0'
   redis:
-    series: xenial
-    charm: cs:~omnivector/redis-2
+    charm: cs:~omnivector/redis
     num_units: 1
     to:
       - '0'
   postgresql:
-    series: xenial
-    charm: cs:postgresql-164
+    charm: cs:postgresql
+    num_units: 1
+    to:
+      - '0'
+  haproxy:
+    charm: cs:haproxy
     num_units: 1
     to:
       - '0'
 machines:
   0:
-    series: xenial
+    series: bionic
 relations:
   - - sentry:postgresql
     - postgresql:db
   - - sentry:redis
     - redis:redis
+  - - sentry:http
+    - haproxy:reverseproxy
